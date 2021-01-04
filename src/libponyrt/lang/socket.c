@@ -89,6 +89,16 @@ PONY_EXTERN_C_BEGIN
 
 PONY_API void pony_os_socket_close(int fd);
 
+PONY_API int pony_os_enobufs()
+{
+    return ENOBUFS;
+}
+
+PONY_API int pony_os_emsgsize()
+{
+    return EMSGSIZE;
+}
+
 // This must match the pony NetAddress type in packages/net.
 typedef struct
 {
@@ -1101,7 +1111,11 @@ PONY_API size_t pony_os_sendmsg(asio_event_t* ev, struct iovec* iov, int iovcnt,
 
   if(sent < 0)
   {
-    if(errno == EWOULDBLOCK || errno == EAGAIN || errno == ENOBUFS)
+    // If EMSGSIZE, caller should decrease the size, there's no point in
+    // retrying the message. For ENOBUFS, the caller should drop packets
+    // or use select() to figure out when it's safe to call sendmsg again.
+    int err = errno;
+    if(err == EWOULDBLOCK || err == EAGAIN || err == ENOBUFS || err == EMSGSIZE)
       return 0;
 
     pony_error();
