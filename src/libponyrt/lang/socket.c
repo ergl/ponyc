@@ -1101,7 +1101,7 @@ PONY_API size_t pony_os_sendmsg(asio_event_t* ev, struct iovec* iov, int iovcnt,
 
   if(sent < 0)
   {
-    if(errno == EWOULDBLOCK || errno == EAGAIN)
+    if(errno == EWOULDBLOCK || errno == EAGAIN || errno == ENOBUFS)
       return 0;
 
     pony_error();
