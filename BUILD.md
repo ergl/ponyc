@@ -69,6 +69,17 @@ sudo make install
 
 Note that you only need to run `make libs` once the first time you build (or if the version of LLVM in the `lib/llvm/src` Git submodule changes).
 
+## macOS (M1)
+
+```bash
+make libs build_flags=-j8 llvm_archs="ARM;X86;AArch64"
+make configure arch=armv8
+make build arch=armv8
+sudo make install
+```
+
+Note that you only need to run `make libs` once the first time you build (or if the version of LLVM in the `lib/llvm/src` Git submodule changes).
+
 ## Windows
 
 Building on Windows requires the following:
