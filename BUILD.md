@@ -78,6 +78,8 @@ make build arch=armv8
 sudo make install
 ```
 
+To compile a pony program, pass the target triple as such: `ponyc --triple arm64-apple-darwin20.1.0`, otherwise pony will attempt to compile your program for x86.
+
 Note that you only need to run `make libs` once the first time you build (or if the version of LLVM in the `lib/llvm/src` Git submodule changes).
 
 ## Windows
