@@ -1181,8 +1181,10 @@ LLVMValueRef gen_ffi(compile_t* c, ast_t* ast)
       // Intrinsic, so use the exact types we supply.
       func = declare_ffi(c, f_name, t, args, true);
     } else {
-      // Make it varargs.
-      func = declare_ffi_vararg(c, f_name, t);
+      // No declaration, not intrinsic, but still use exact types.
+      // (varargs is not an equivalent calling convention on all platforms,
+      // so we can't blindly fall back to assuming this is a varargs function).
+      func = declare_ffi(c, f_name, t, args, false);
     }
 
     size_t index = HASHMAP_UNKNOWN;
